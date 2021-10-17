@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.memo.core.model.MemoId
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -23,5 +22,5 @@ internal interface RoomMemoDao {
     suspend fun update(memo: RoomMemo)
 
     @Query("DELETE FROM memos WHERE id = :id")
-    suspend fun delete(id: MemoId)
+    suspend fun delete(id: String)
 }
