@@ -26,7 +26,7 @@ internal class RoomMemoRepository(
     override suspend fun delete(input: MemoRepositoryInputDelete) {
         when (input) {
             is MemoRepositoryInputDelete.Memo -> {
-                roomMemoDao.delete(input.id)
+                roomMemoDao.delete(input.id.value)
             }
         }
     }
