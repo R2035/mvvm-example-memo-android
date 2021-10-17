@@ -9,9 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.memo.R
 import com.example.memo.databinding.FragmentMemoListBinding
 import com.example.memo.fragment.BaseFragment
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -22,6 +26,8 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 class MemoListFragment : BaseFragment<MemoListViewModel, FragmentMemoListBinding>() {
     override val viewModel: MemoListViewModel by stateViewModel()
 
+    private val groupAdapter = GroupAdapter<GroupieViewHolder>()
+
     override fun inflate(inflater: LayoutInflater, root: ViewGroup?, attachToParent: Boolean): FragmentMemoListBinding {
         return FragmentMemoListBinding.inflate(inflater, root, attachToParent)
     }
@@ -29,10 +35,27 @@ class MemoListFragment : BaseFragment<MemoListViewModel, FragmentMemoListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.sections.collect {
+                groupAdapter.update(it)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+        val dividerItemDecoration = DividerItemDecoration(requireContext(), linearLayoutManager.orientation)
+        requireBinding().memoListRecyclerView.adapter = groupAdapter
+        requireBinding().memoListRecyclerView.layoutManager = linearLayoutManager
+        requireBinding().memoListRecyclerView.addItemDecoration(dividerItemDecoration)
+
+        groupAdapter.setOnItemClickListener { item, _ ->
+            val index = groupAdapter.getAdapterPosition(item)
+            viewModel.setOnItemClickListener(index)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
