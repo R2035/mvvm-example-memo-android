@@ -15,8 +15,8 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 /**
  * A01 メモ一覧画面
  */
-class MemoListFragment : BaseFragment<MemoListFragmentViewModel, FragmentMemoListBinding>() {
-    override val viewModel: MemoListFragmentViewModel by stateViewModel()
+class MemoListFragment : BaseFragment<MemoListViewModel, FragmentMemoListBinding>() {
+    override val viewModel: MemoListViewModel by stateViewModel()
 
     override fun inflate(inflater: LayoutInflater, root: ViewGroup?, attachToParent: Boolean): FragmentMemoListBinding {
         return FragmentMemoListBinding.inflate(inflater, root, attachToParent)

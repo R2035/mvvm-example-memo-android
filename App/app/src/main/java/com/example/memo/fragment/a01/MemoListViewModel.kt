@@ -8,7 +8,7 @@ import com.example.memo.core.repository.memo.contract.MemoRepository
 import com.example.memo.fragment.BaseFragmentViewModel
 import kotlinx.coroutines.flow.map
 
-class MemoListFragmentViewModel(
+class MemoListViewModel(
     savedStateHandle: SavedStateHandle,
     private val memoRepository: MemoRepository,
 ) : BaseFragmentViewModel() {
