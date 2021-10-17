@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class EditingMemoViewModel(
+    args: EditingMemoFragmentArgs,
     savedStateHandle: SavedStateHandle,
     private val memoRepository: MemoRepository,
 ) : BaseFragmentViewModel() {

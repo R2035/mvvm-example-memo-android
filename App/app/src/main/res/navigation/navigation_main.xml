@@ -16,5 +16,9 @@
     <fragment
         android:id="@+id/a02"
         android:name="com.example.memo.fragment.a02.EditingMemoFragment"
-        android:label="@string/a02_title" />
+        android:label="@string/a02_title">
+        <argument
+            android:name="value"
+            app:argType="com.example.memo.fragment.a02.EditingMemoArgument" />
+    </fragment>
 </navigation>

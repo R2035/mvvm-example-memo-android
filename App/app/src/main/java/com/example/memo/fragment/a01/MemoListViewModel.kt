@@ -5,6 +5,7 @@ import com.example.memo.core.model.Memo
 import com.example.memo.core.repository.memo.contract.MemoRepository
 import com.example.memo.core.repository.memo.contract.MemoRepositoryInputRead
 import com.example.memo.fragment.BaseFragmentViewModel
+import com.example.memo.fragment.a02.EditingMemoArgument
 import com.example.memo.item.MemoItem
 import com.xwray.groupie.Section
 import kotlinx.coroutines.flow.Flow
@@ -57,13 +58,13 @@ class MemoListViewModel(
 
     fun onAddOptionsItemSelected() {
         viewModelScope.launch {
-            transition(MemoListFragmentDirections.actionA01ToA02())
+            transition(MemoListFragmentDirections.actionA01ToA02(EditingMemoArgument(null)))
         }
     }
 
     fun setOnItemClickListener(index: Int) {
         viewModelScope.launch {
-            transition(MemoListFragmentDirections.actionA01ToA02())
+            transition(MemoListFragmentDirections.actionA01ToA02(EditingMemoArgument(null)))
         }
     }
 
