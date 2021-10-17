@@ -11,7 +11,7 @@ import com.xwray.groupie.Section
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -34,7 +34,7 @@ class MemoListViewModel(
         sections = _memos.map { getSections(it) }
 
         viewModelScope.launch {
-            _state.flatMapConcat { state ->
+            _state.flatMapLatest { state ->
                 val searchText = state.searchText
                 if (searchText.isEmpty()) {
                     memoRepository.read(MemoRepositoryInputRead.All)

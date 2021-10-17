@@ -12,7 +12,7 @@ internal interface RoomMemoDao {
     @Query("SELECT * FROM memos")
     fun selectAll(): Flow<List<RoomMemo>>
 
-    @Query("SELECT * FROM memos WHERE body GLOB :body")
+    @Query("SELECT * FROM memos WHERE body LIKE'%' || :body || '%'")
     fun select(body: String): Flow<List<RoomMemo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
