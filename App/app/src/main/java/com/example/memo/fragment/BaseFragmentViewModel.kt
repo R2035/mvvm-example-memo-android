@@ -1,14 +1,13 @@
 package com.example.memo.fragment
 
 import android.os.Parcelable
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -21,12 +20,12 @@ import kotlinx.coroutines.withContext
  * このアプリで実装するFragmentのViewModelは全てこのBaseFragmentを継承させる
  */
 abstract class BaseFragmentViewModel : ViewModel() {
-    val navDirections: LiveData<NavDirections>
+    val navDirections: Flow<NavDirections>
 
     private val _navDirections = MutableSharedFlow<NavDirections>()
 
     init {
-        navDirections = _navDirections.asLiveData(viewModelScope.coroutineContext)
+        navDirections = _navDirections
     }
 
     protected suspend fun emit(navDirections: NavDirections) {

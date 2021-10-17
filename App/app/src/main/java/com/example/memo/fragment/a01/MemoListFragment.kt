@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import com.example.memo.R
 import com.example.memo.databinding.FragmentMemoListBinding
 import com.example.memo.fragment.BaseFragment
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 /**
@@ -48,8 +52,22 @@ class MemoListFragment : BaseFragment<MemoListViewModel, FragmentMemoListBinding
             }
         })
 
-        viewModel.searchText.observe(viewLifecycleOwner) {
-            searchView.setQuery(it, false)
+        lifecycleScope.launch {
+            viewModel.searchText.collect {
+                searchView.setQuery(it, false)
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.memo_list_menu_item_add -> {
+                viewModel.onAddOptionsItemSelected()
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 }

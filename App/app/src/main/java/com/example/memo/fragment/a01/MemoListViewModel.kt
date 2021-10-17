@@ -1,25 +1,24 @@
 package com.example.memo.fragment.a01
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.memo.core.repository.memo.contract.MemoRepository
 import com.example.memo.fragment.BaseFragmentViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class MemoListViewModel(
     savedStateHandle: SavedStateHandle,
     private val memoRepository: MemoRepository,
 ) : BaseFragmentViewModel() {
-    val searchText: LiveData<String>
+    val searchText: Flow<String>
 
     private val _state = savedStateHandle.getStateFlow(MemoListState.initialValue)
 
     init {
         searchText = _state
             .map { it.searchText }
-            .asLiveData(viewModelScope.coroutineContext)
     }
 
     fun onSearchViewQueryTextSubmit(query: String?) {
@@ -32,5 +31,11 @@ class MemoListViewModel(
         _state.value = _state.value.copy(
             searchText = newText ?: ""
         )
+    }
+
+    fun onAddOptionsItemSelected() {
+        viewModelScope.launch {
+            emit(MemoListFragmentDirections.actionA01ToA02())
+        }
     }
 }

@@ -7,5 +7,14 @@
     <fragment
         android:id="@+id/a01"
         android:name="com.example.memo.fragment.a01.MemoListFragment"
-        android:label="@string/a01_title" />
+        android:label="@string/a01_title">
+        <action
+            android:id="@+id/action_a01_to_a02"
+            app:destination="@id/a02" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/a02"
+        android:name="com.example.memo.fragment.a02.EditingMemoFragment"
+        android:label="@string/a02_title" />
 </navigation>
