@@ -1,6 +1,5 @@
 package com.example.memo.fragment.a01
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.memo.core.model.Memo
 import com.example.memo.core.repository.memo.contract.MemoRepository
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MemoListViewModel(
-    savedStateHandle: SavedStateHandle,
     private val memoRepository: MemoRepository,
 ) : BaseFragmentViewModel() {
     val searchText: Flow<String>
@@ -25,17 +23,19 @@ class MemoListViewModel(
 
     private val _memos = MutableStateFlow<List<Memo>>(emptyList())
 
-    private val _state = savedStateHandle.getStateFlow(MemoListState.initialValue)
+    // searchTextはSavedStateHandleで保持しない
+    // メモリ不足などでActivityが再生成された場合はSearchViewの入力状態は失われる
+    // searchTextをSavedStateHandleで保持しているとSearchViewの入力状態と検索結果がずれてしまう
+
+    private val _searchText = MutableStateFlow<String>("")
 
     init {
-        searchText = _state
-            .map { it.searchText }
+        searchText = _searchText
 
         sections = _memos.map { getSections(it) }
 
         viewModelScope.launch {
-            _state.flatMapLatest { state ->
-                val searchText = state.searchText
+            _searchText.flatMapLatest { searchText ->
                 if (searchText.isEmpty()) {
                     memoRepository.read(MemoRepositoryInputRead.All)
                 } else {
@@ -48,15 +48,11 @@ class MemoListViewModel(
     }
 
     fun onSearchViewQueryTextSubmit(query: String?) {
-        _state.value = _state.value.copy(
-            searchText = query ?: ""
-        )
+        _searchText.value = query ?: ""
     }
 
     fun onSearchViewQueryTextChange(newText: String?) {
-        _state.value = _state.value.copy(
-            searchText = newText ?: ""
-        )
+        _searchText.value = newText ?: ""
     }
 
     fun onAddOptionsItemSelected() {

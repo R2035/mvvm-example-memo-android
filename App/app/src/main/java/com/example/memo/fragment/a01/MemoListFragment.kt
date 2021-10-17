@@ -18,13 +18,13 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A01 メモ一覧画面
  */
 class MemoListFragment : BaseFragment<MemoListViewModel, FragmentMemoListBinding>() {
-    override val viewModel: MemoListViewModel by stateViewModel()
+    override val viewModel: MemoListViewModel by viewModel()
 
     private val groupAdapter = GroupAdapter<GroupieViewHolder>()
 
