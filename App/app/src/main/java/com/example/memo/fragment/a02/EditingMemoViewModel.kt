@@ -9,7 +9,6 @@ import com.example.memo.core.repository.memo.contract.MemoRepositoryInputDelete
 import com.example.memo.core.repository.memo.contract.MemoRepositoryInputUpdate
 import com.example.memo.fragment.BaseFragmentViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -20,20 +19,12 @@ class EditingMemoViewModel(
 ) : BaseFragmentViewModel() {
     val body: Flow<String>
 
-    val isDeleteOptionsItemVisible: Flow<Boolean>
-
     private val _state = savedStateHandle.getStateFlow(EditingMemoState(args.value.memo?.body ?: ""))
-
-    private val _isDeleteOptionsItemVisible: MutableStateFlow<Boolean>
 
     private val memoId = args.value.memo?.id
 
     init {
         body = _state.map { it.body }
-
-        _isDeleteOptionsItemVisible = MutableStateFlow(args.value.memo != null)
-
-        isDeleteOptionsItemVisible = _isDeleteOptionsItemVisible
     }
 
     fun bodyEditTextAfterTextChanged(text: String) {

@@ -52,6 +52,8 @@ class EditingMemoFragment : BaseFragment<EditingMemoViewModel, FragmentEditingMe
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_editing_memo, menu)
+        val deleteOptionsItem = menu.findItem(R.id.memo_list_menu_item_delete)
+        deleteOptionsItem.isVisible = args.value.memo != null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
