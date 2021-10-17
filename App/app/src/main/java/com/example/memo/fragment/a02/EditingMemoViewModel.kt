@@ -1,12 +1,12 @@
-package com.example.memo.fragment.a01
+package com.example.memo.fragment.a02
 
 import androidx.lifecycle.SavedStateHandle
 import com.example.memo.core.repository.memo.contract.MemoRepository
 import com.example.memo.fragment.BaseFragmentViewModel
 
-class MemoListFragmentViewModel(
-    private val memoRepository: MemoRepository,
+class EditingMemoViewModel(
     savedStateHandle: SavedStateHandle,
+    private val memoRepository: MemoRepository,
 ) : BaseFragmentViewModel() {
-    private val _state = savedStateHandle.getStateFlow(MemoListState.initialValue)
+    private val _state = savedStateHandle.getStateFlow(EditingMemoState.initialValue)
 }
