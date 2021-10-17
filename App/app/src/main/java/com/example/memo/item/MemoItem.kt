@@ -9,6 +9,7 @@ import com.xwray.groupie.viewbinding.GroupieViewHolder
 data class MemoItem(
     private val id: String,
     private val body: String,
+    private val onRootClick: () -> Unit,
 ) : BaseItem<ItemMemoBinding, MemoItemPayload>(
     id.hashCode().toLong(),
 ) {
@@ -16,6 +17,7 @@ data class MemoItem(
     override fun getPayload(): MemoItemPayload {
         return MemoItemPayload(
             body,
+            onRootClick,
         )
     }
 
@@ -28,6 +30,7 @@ data class MemoItem(
 
     override fun update(viewBinding: ItemMemoBinding, payload: MemoItemPayload) {
         viewBinding.memoBodyTextView.text = payload.body
+        viewBinding.root.setOnClickListener { payload.onRootClick() }
     }
 
     override fun getLayout(): Int {
@@ -39,6 +42,7 @@ data class MemoItem(
     }
 
     override fun unbind(viewHolder: GroupieViewHolder<ItemMemoBinding>) {
+        viewHolder.binding.root.setOnClickListener(null)
         super.unbind(viewHolder)
     }
 }
