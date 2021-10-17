@@ -22,14 +22,23 @@ import kotlinx.coroutines.withContext
 abstract class BaseFragmentViewModel : ViewModel() {
     val navDirections: Flow<NavDirections>
 
+    val pop: Flow<Unit>
+
     private val _navDirections = MutableSharedFlow<NavDirections>()
+
+    private val _pop = MutableSharedFlow<Unit>()
 
     init {
         navDirections = _navDirections
+        pop = _pop
     }
 
-    protected suspend fun emit(navDirections: NavDirections) {
+    protected suspend fun transition(navDirections: NavDirections) {
         _navDirections.emit(navDirections)
+    }
+
+    protected suspend fun pop() {
+        _pop.emit(Unit)
     }
 
     /**
