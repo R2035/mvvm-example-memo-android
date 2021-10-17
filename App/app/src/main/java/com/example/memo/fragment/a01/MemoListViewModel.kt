@@ -5,6 +5,7 @@ import com.example.memo.core.model.Memo
 import com.example.memo.core.repository.memo.contract.MemoRepository
 import com.example.memo.core.repository.memo.contract.MemoRepositoryInputRead
 import com.example.memo.fragment.BaseFragmentViewModel
+import com.example.memo.fragment.a02.EditingMemoArgument
 import com.example.memo.item.MemoItem
 import com.xwray.groupie.Section
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +33,13 @@ class MemoListViewModel(
     init {
         searchText = _searchText
 
-        sections = _memos.map { getSections(it) }
+        sections = _memos.map {
+            getSections(it) {
+                viewModelScope.launch {
+                    transition(MemoListFragmentDirections.actionA01ToA02(EditingMemoArgument(it)))
+                }
+            }
+        }
 
         viewModelScope.launch {
             _searchText.flatMapLatest { searchText ->
@@ -57,20 +64,18 @@ class MemoListViewModel(
 
     fun onAddOptionsItemSelected() {
         viewModelScope.launch {
-            transition(MemoListFragmentDirections.actionA01ToA02())
-        }
-    }
-
-    fun setOnItemClickListener(index: Int) {
-        viewModelScope.launch {
-            transition(MemoListFragmentDirections.actionA01ToA02())
+            transition(MemoListFragmentDirections.actionA01ToA02(EditingMemoArgument(null)))
         }
     }
 
     companion object {
-        private fun getSections(memos: List<Memo>): List<Section> {
+        private fun getSections(memos: List<Memo>, onMemoClick: (Memo) -> Unit): List<Section> {
             val memoSection = Section()
-            val memoItems = memos.map { MemoItem(it.id.value, it.body) }
+            val memoItems = memos.map {
+                MemoItem(it.id.value, it.body) {
+                    onMemoClick(it)
+                }
+            }
             memoSection.addAll(memoItems)
             return listOf(memoSection)
         }

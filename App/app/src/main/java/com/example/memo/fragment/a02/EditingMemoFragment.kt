@@ -9,17 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.example.memo.R
 import com.example.memo.databinding.FragmentEditingMemoBinding
 import com.example.memo.fragment.BaseFragment
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * A02 メモ編集画面
  */
 class EditingMemoFragment : BaseFragment<EditingMemoViewModel, FragmentEditingMemoBinding>() {
-    override val viewModel: EditingMemoViewModel by stateViewModel()
+    override val viewModel by stateViewModel<EditingMemoViewModel> { parametersOf(args) }
+
+    private val args: EditingMemoFragmentArgs by navArgs()
 
     override fun inflate(inflater: LayoutInflater, root: ViewGroup?, attachToParent: Boolean): FragmentEditingMemoBinding {
         return FragmentEditingMemoBinding.inflate(inflater, root, attachToParent)
@@ -48,6 +52,8 @@ class EditingMemoFragment : BaseFragment<EditingMemoViewModel, FragmentEditingMe
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_editing_memo, menu)
+        val deleteOptionsItem = menu.findItem(R.id.memo_list_menu_item_delete)
+        deleteOptionsItem.isVisible = args.value.memo != null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

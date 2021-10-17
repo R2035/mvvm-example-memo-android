@@ -51,11 +51,6 @@ class MemoListFragment : BaseFragment<MemoListViewModel, FragmentMemoListBinding
         requireBinding().memoListRecyclerView.adapter = groupAdapter
         requireBinding().memoListRecyclerView.layoutManager = linearLayoutManager
         requireBinding().memoListRecyclerView.addItemDecoration(dividerItemDecoration)
-
-        groupAdapter.setOnItemClickListener { item, _ ->
-            val index = groupAdapter.getAdapterPosition(item)
-            viewModel.setOnItemClickListener(index)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

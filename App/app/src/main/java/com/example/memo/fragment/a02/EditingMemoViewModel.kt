@@ -2,20 +2,26 @@ package com.example.memo.fragment.a02
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.example.memo.core.model.Memo
 import com.example.memo.core.repository.memo.contract.MemoRepository
 import com.example.memo.core.repository.memo.contract.MemoRepositoryInputCreate
+import com.example.memo.core.repository.memo.contract.MemoRepositoryInputDelete
+import com.example.memo.core.repository.memo.contract.MemoRepositoryInputUpdate
 import com.example.memo.fragment.BaseFragmentViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class EditingMemoViewModel(
-    savedStateHandle: SavedStateHandle,
+    args: EditingMemoFragmentArgs,
     private val memoRepository: MemoRepository,
+    savedStateHandle: SavedStateHandle,
 ) : BaseFragmentViewModel() {
     val body: Flow<String>
 
-    private val _state = savedStateHandle.getStateFlow(EditingMemoState.initialValue)
+    private val _state = savedStateHandle.getStateFlow(EditingMemoState(args.value.memo?.body ?: ""))
+
+    private val memoId = args.value.memo?.id
 
     init {
         body = _state.map { it.body }
@@ -29,15 +35,22 @@ class EditingMemoViewModel(
 
     fun onSaveOptionsItemSelected() {
         viewModelScope.launch {
+            val memoId = memoId
             val body = _state.value.body
-            memoRepository.create(MemoRepositoryInputCreate.Memo(body))
+            if (memoId != null) {
+                val memo = Memo(memoId, body)
+                memoRepository.update(MemoRepositoryInputUpdate.Memo(memo))
+            } else {
+                memoRepository.create(MemoRepositoryInputCreate.Memo(body))
+            }
             pop()
         }
     }
 
     fun onDeleteOptionsItemSelected() {
+        val memoId = memoId ?: throw IllegalStateException("Delete options item cannot be selected when memoId is null.")
         viewModelScope.launch {
-            // TODO: 削除処理を実装
+            memoRepository.delete(MemoRepositoryInputDelete.Memo(memoId))
             pop()
         }
     }

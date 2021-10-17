@@ -10,7 +10,7 @@ object AppModule {
     fun create(): Module {
         return module {
             viewModel { MemoListViewModel(get()) }
-            viewModel { EditingMemoViewModel(get(), get()) }
+            viewModel { EditingMemoViewModel(get(), get(), get()) }
         }
     }
 }
