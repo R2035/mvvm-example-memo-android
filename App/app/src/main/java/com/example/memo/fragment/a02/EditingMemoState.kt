@@ -6,10 +6,4 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class EditingMemoState(
     val body: String,
-) : Parcelable {
-    companion object {
-        val initialValue = EditingMemoState(
-            "",
-        )
-    }
-}
+) : Parcelable

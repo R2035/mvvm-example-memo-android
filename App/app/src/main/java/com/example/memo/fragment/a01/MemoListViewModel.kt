@@ -64,7 +64,8 @@ class MemoListViewModel(
 
     fun setOnItemClickListener(index: Int) {
         viewModelScope.launch {
-            transition(MemoListFragmentDirections.actionA01ToA02(EditingMemoArgument(null)))
+            val memo = _memos.value[index]
+            transition(MemoListFragmentDirections.actionA01ToA02(EditingMemoArgument(memo)))
         }
     }
 

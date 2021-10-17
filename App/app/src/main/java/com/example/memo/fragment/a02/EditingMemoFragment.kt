@@ -21,7 +21,7 @@ import org.koin.core.parameter.parametersOf
  * A02 メモ編集画面
  */
 class EditingMemoFragment : BaseFragment<EditingMemoViewModel, FragmentEditingMemoBinding>() {
-    override val viewModel: EditingMemoViewModel by stateViewModel { parametersOf(args) }
+    override val viewModel by stateViewModel<EditingMemoViewModel> { parametersOf(args) }
 
     private val args: EditingMemoFragmentArgs by navArgs()
 
