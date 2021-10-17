@@ -4,4 +4,6 @@
     <string name="a01_title">メモ一覧</string>
 
     <string name="a02_title">メモ編集</string>
+    <string name="a02_hint">本文</string>
+    <string name="a02_save_button_title">保存</string>
 </resources>

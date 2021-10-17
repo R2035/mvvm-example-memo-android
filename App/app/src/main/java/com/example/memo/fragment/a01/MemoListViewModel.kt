@@ -35,7 +35,7 @@ class MemoListViewModel(
 
     fun onAddOptionsItemSelected() {
         viewModelScope.launch {
-            emit(MemoListFragmentDirections.actionA01ToA02())
+            transition(MemoListFragmentDirections.actionA01ToA02())
         }
     }
 }

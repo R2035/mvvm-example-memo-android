@@ -27,7 +27,13 @@ abstract class BaseFragment<ViewModel : BaseFragmentViewModel, Binding : ViewBin
 
         lifecycleScope.launch {
             viewModel.navDirections.collect {
-                navigate(it)
+                findNavController().navigate(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.pop.collect {
+                findNavController().popBackStack()
             }
         }
     }
@@ -51,7 +57,5 @@ abstract class BaseFragment<ViewModel : BaseFragmentViewModel, Binding : ViewBin
     }
 
     private fun navigate(navDirections: NavDirections) {
-        val navController = this.findNavController()
-        navController.navigate(navDirections)
     }
 }
